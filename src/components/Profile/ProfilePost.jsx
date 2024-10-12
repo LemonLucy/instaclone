@@ -94,13 +94,6 @@ const ProfilePost = ({ img }) => {
                   <Comment createdAt="1d ago" username="asaprogrammer_" profilePic="/profilepic.png" text="Dummy images from Unsplash" />
                   <Comment createdAt="12h ago" username="abrahmov" profilePic="https://bit.ly/dan-abramov" text="Nice pic" />
                   <Comment createdAt="3h ago" username="kentodds" profilePic="https://bit.ly/kent-c-dodds" text="Good clone dude!" />
-                  <Comment createdAt="1d ago" username="asaprogrammer_" profilePic="/profilepic.png" text="Dummy images from Unsplash" />
-                  <Comment createdAt="12h ago" username="abrahmov" profilePic="https://bit.ly/dan-abramov" text="Nice pic" />
-                  <Comment createdAt="3h ago" username="kentodds" profilePic="https://bit.ly/kent-c-dodds" text="Good clone dude!" />
-                  <Comment createdAt="1d ago" username="asaprogrammer_" profilePic="/profilepic.png" text="Dummy images from Unsplash" />
-                  <Comment createdAt="12h ago" username="abrahmov" profilePic="https://bit.ly/dan-abramov" text="Nice pic" />
-                  <Comment createdAt="3h ago" username="kentodds" profilePic="https://bit.ly/kent-c-dodds" text="Good clone dude!" />
-
                 </VStack>
 
                 <Divider borderColor="gray.700" />
