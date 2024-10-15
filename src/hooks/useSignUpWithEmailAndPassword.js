@@ -1,7 +1,8 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection,query, where, getDocs } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import useShowToast from "./useShowToast";
+import useAuthStore from "../store/authStore";
 
 const useSignUpWithEmailAndPassword = () => {
     const [
@@ -9,15 +10,27 @@ const useSignUpWithEmailAndPassword = () => {
         loading,
         error,
       ] = useCreateUserWithEmailAndPassword(auth);
-      const showToast=useShowToast();
+    const showToast=useShowToast();
+    const loginUser= useAuthStore(state => state.login)
 
-      const signup= async(inputs)=>{
+    const signup= async(inputs)=>{
         if(!inputs.email||!inputs.password ||!inputs.username||!inputs.fullName){
-            showToast("Error","please fill all the fiedls","error");
+            showToast('error','please fill the blanks','error');
             return
         }
+
+        const usersRef=collection(firestore,"users");
+        const q= query(usersRef, where("username", "==", inputs.username));
+
+        const querySnapshot=await getDocs(q);
+
+        if(!querySnapshot.empty){
+            showToast('error','user already exists','error');
+            return;
+        }
         try{
-            const newUser=await createUserWithEmailAndPassword(inputs.email,inputs.password)
+            //1.firebase와 상호작용 : 사용자 등록, firestore에 저장
+            const newUser = await createUserWithEmailAndPassword( inputs.email, inputs.password);            
 
             if(newUser){
                 const userDoc={
@@ -33,15 +46,15 @@ const useSignUpWithEmailAndPassword = () => {
                     createdAt:Date.now()
                 }
                 await setDoc(doc(firestore,"users",newUser.user.uid),userDoc);
+                //2. 상태관리 : 전역적으로 사용자 정보 유지, 다른 곳에서 사용할수있도록
                 localStorage.setItem("user-info",JSON.stringify(userDoc))
-                showToast("Success", "Account created successfully!", "success");
-            }
+                loginUser(userDoc);   
+            } 
         }catch(error){
-            console.error('Firebase signup error:', error.code, error.message);
-            showToast("Error",error.message,"error");
+            showToast('error',error.message,'error');
         }
-      }
-  return{loading,error,signup}
+    }
+    return{loading,error,signup}
 }
 
 export default useSignUpWithEmailAndPassword
