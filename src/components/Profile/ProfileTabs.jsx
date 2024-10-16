@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex,Box,Text } from '@chakra-ui/react'
 import { BsBookmark, BsGrid3X3, BsSuitHeart } from 'react-icons/bs'
 
