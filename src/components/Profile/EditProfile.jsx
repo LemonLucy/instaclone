@@ -13,17 +13,39 @@ import {
     Center,
   } from '@chakra-ui/react'
   import { SmallCloseIcon } from '@chakra-ui/icons'
-  import { useState } from 'react'
-  
+  import { useState,useRef } from 'react'
+  import useAuthStore from '../../store/authStore'
+  import usePreviewImg from '../../hooks/usePreviewImg'
+  import useEditProfile from '../../hooks/useEditProfile'
+  import useShowToast from '../../hooks/useShowToast'
+
   export default function UserProfileEdit({onClose}) {
     const [inputs,setInputs]=useState({
-        fullName: "",
-		username: "",
-		bio: "",
+      fullName: "",
+      username: "",
+      bio: "",     
     })
 
-    const handleEditProfile=()=>{
-        console.log(inputs);
+    const authUser=useAuthStore((state)=>state.user);
+    const fileRef=useRef(null);    
+    const { imageUrl, handleImageChange } = usePreviewImg(authUser.imageUrl);
+    const {isUpdating,editProfile}=useEditProfile();
+    const showToast=useShowToast();
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleImageChangeWrapper = (e) => {
+      const file = e.target.files[0];
+      handleImageChange(e); // 미리보기 URL 생성
+      setSelectedFile(file); // 선택한 파일 상태 업데이트
+    };
+
+    const handleEditProfile=async() =>{
+      try {
+        await editProfile(inputs,selectedFile);
+        onClose();
+      }catch(error){
+        showToast("Error", error.message, "error");
+      }
     }
 
     return (
@@ -45,10 +67,9 @@ import {
             User Profile Edit
           </Heading>
           <FormControl id="userName">
-            <FormLabel>User Icon</FormLabel>
             <Stack direction={['column', 'row']} spacing={6}>
               <Center>
-                <Avatar size="xl" src="https://bit.ly/sage-adebayo">
+                <Avatar size="xl" src={imageUrl}>
                   <AvatarBadge
                     as={IconButton}
                     size="sm"
@@ -61,8 +82,11 @@ import {
                 </Avatar>
               </Center>
               <Center w="full">
-                <Button w="full">Change Icon</Button>
+                <Button w="full" onClick={() => fileRef.current.click()}>Edit Profile</Button>
               </Center>
+              <Input type='file' hidden ref={fileRef} 
+              onChange={handleImageChangeWrapper}
+              />
             </Stack>
           </FormControl>
 
@@ -72,7 +96,7 @@ import {
                 placeholder={"Full Name"}
                 size={"sm"}
                 type={"text"}
-                value={inputs.fullName}
+                value={inputs.fullName || authUser.fullName}
                 onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
             />
         </FormControl>
@@ -83,7 +107,7 @@ import {
                 placeholder={"Username"}
                 size={"sm"}
                 type={"text"}
-                value={inputs.username}
+                value={inputs.username || authUser.username}
                 onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
             />
         </FormControl>
@@ -94,7 +118,7 @@ import {
                 placeholder={"Bio"}
                 size={"sm"}
                 type={"text"}
-                value={inputs.bio}
+                value={inputs.bio || authUser.bio}
                 onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
             />
         </FormControl>
@@ -118,6 +142,7 @@ import {
                 bg: 'blue.500',
               }}
               onClick={handleEditProfile}
+              isLoading={isUpdating}
               >
               Submit
             </Button>

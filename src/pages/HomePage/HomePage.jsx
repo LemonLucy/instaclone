@@ -1,4 +1,3 @@
-import React from 'react'
 import {Container,Flex,Box} from '@chakra-ui/react'
 import FeedPosts from '../../components/FeedPosts/FeedPosts'
 import SuggestedUsers from '../../components/SuggestedUsers/SuggestedUsers'
