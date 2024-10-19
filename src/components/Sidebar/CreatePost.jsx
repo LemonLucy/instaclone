@@ -22,7 +22,6 @@ import { useRef, useState } from "react";
 import usePreviewImg from "../../hooks/usePreviewImg";
 import useShowToast from "../../hooks/useShowToast";
 import useAuthStore from "../../store/authStore";
-import usePostStore from "../../store/postStore";
 import useUserProfileStore from "../../store/userProfileStore";
 import { useLocation } from "react-router-dom";
 import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
@@ -125,7 +124,6 @@ function useCreatePost() {
 	const showToast = useShowToast();
 	const [isLoading, setIsLoading] = useState(false);
 	const authUser = useAuthStore((state) => state.user);
-	const createPost = usePostStore((state) => state.createPost);
 	const addPost = useUserProfileStore((state) => state.addPost);
 	const userProfile = useUserProfileStore((state) => state.userProfile);
 	const { pathname } = useLocation();
@@ -154,8 +152,6 @@ function useCreatePost() {
 			await updateDoc(postDocRef, { imageURL: downloadURL });
 
 			newPost.imageURL = downloadURL;
-
-			if (userProfile.uid === authUser.uid) createPost({ ...newPost, id: postDocRef.id });
 
 			if (pathname !== "/" && userProfile.uid === authUser.uid) addPost({ ...newPost, id: postDocRef.id });
 

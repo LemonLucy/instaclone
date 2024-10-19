@@ -6,9 +6,9 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import useAuthStore from './store/authStore';
 
 function App() {
-  const authUser =useAuthStore(state => state.user);
+  const { user: authUser } =useAuthStore();
   return (
-    <PageLayout>
+     <PageLayout>
       <Routes>
         <Route path='/' element={ authUser ? <HomePage /> : <Navigate to="/auth" />} />
         <Route path='/auth' element={!authUser ? <AuthPage /> : <Navigate to="/" />} />

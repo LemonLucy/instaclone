@@ -35,6 +35,7 @@ const ProfileHeader = () => {
 								color={"black"}
 								_hover={{ bg: "whiteAlpha.800" }}
 								size={{ base: "xs", md: "sm" }}
+								onClick={onOpen}
 							>
 								Edit Profile
 							</Button>

@@ -13,7 +13,7 @@ const useEditProfile = () => {
 	const setAuthUser = useAuthStore((state) => state.setUser);
 	const setUserProfile = useUserProfileStore((state) => state.setUserProfile);
 	const showToast = useShowToast();
-    const uploadImage = useUploadImage();
+	const uploadImage=useUploadImage();
 
 	const editProfile = async (inputs, selectedFile) => {
 		if (isUpdating || !authUser) return;

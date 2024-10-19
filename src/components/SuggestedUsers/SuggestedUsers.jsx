@@ -1,21 +1,32 @@
-import React from 'react'
 import { VStack,Flex,Box,Text, Link } from '@chakra-ui/react'
 import SuggestedHeader from "./SuggestedHeader"
 import SuggestedUser from "./SuggestedUser"
+import useGetSuggestedUsers from '../../hooks/useGetSuggestedUsers'
 
 const SuggestedUsers = () => {
-  return <VStack py={8} px={6} gap={4}>
+  const {isLoading, suggestedUsers}=useGetSuggestedUsers();
+
+  if(isLoading) return null;
+
+  return (
+  <VStack py={8} px={6} gap={4}>
     <SuggestedHeader />
 
-    <Flex alignItems={"center"} justifyContent={"space-between"} w={"full"}>
-        <Text>Suggested for you</Text>
+    {suggestedUsers.length !==0 && (
+      <Flex alignItems={"center"} justifyContent={"space-between"} w={"full"}>
+        <Text fontSize={12} fontWeight={"bold"} color={"gray.500"}>
+						Suggested for you
+					</Text>
         <Text fontSize={12} fontWeight={"bold"} color={"gray.400"} cursor={"pointer"}>
-        See All </Text>
-    </Flex>
+          See All 
+        </Text>
+      </Flex>
+    )
+    }
 
-    <SuggestedUser name ="Dan" followers={1394} avatar='https://bit.ly/dan-abnamov' />
-    <SuggestedUser name ="Dan" followers={1394} avatar='https://bit.ly/dan-abnamov' />
-    <SuggestedUser name ="Dan" followers={1394} avatar='https://bit.ly/dan-abnamov' />
+    {suggestedUsers.map(user => (
+      <SuggestedUser user={user} key={user.id} />
+    ))}
 
     <Box fontSize={12} color={"gray.500" } mt={5}
     > 2024 Built By{" "}
@@ -23,6 +34,7 @@ const SuggestedUsers = () => {
     </Link>
     </Box>
   </VStack>
+  )
 }
 
 export default SuggestedUsers

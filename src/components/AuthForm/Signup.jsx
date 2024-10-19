@@ -27,7 +27,8 @@ const Signup = () => {
         onChange={(e)=>setInputs({...inputs,fullName:e.target.value})}
         />
         <InputGroup>
-            <Input placeholder='Password' fontSize={14} type={showPassword ?"text":"password"}
+            <Input placeholder='Password' fontSize={14} 
+            type={showPassword ?"text":"password"}
             value={inputs.password}
             size={"sm"}
             onChange={(e)=>setInputs({...inputs,password:e.target.value})}

@@ -1,4 +1,3 @@
-import React from 'react'
 import {Flex, Box,Avatar,Text} from '@chakra-ui/react'
 
 const PostHeader = ({username,avatar}) => {

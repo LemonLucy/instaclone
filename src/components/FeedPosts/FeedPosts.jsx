@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { Box,Container,VStack, Flex, Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Box,Container,VStack, Flex, Skeleton, SkeletonCircle } from '@chakra-ui/react'
 import FeedPost from './FeedPost'
 
 const FeedPosts = () => {

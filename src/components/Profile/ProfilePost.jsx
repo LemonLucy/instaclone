@@ -1,7 +1,4 @@
-import React from 'react';
 import {
-  Button,
-  Input,
   VStack,
   Divider,
   Avatar,

@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import {  useState,useEffect } from 'react';
 // import useUploadImage from './useUploadImg';
 import useShowToast from "./useShowToast";
 
@@ -30,6 +30,14 @@ const usePreviewImg = (initialImage) => {
         }
     };
   
+    useEffect(() => {
+      return () => {
+          if (imageUrl) {
+              URL.revokeObjectURL(imageUrl); // Free memory
+          }
+      };
+  }, [imageUrl]);
+
     return { imageUrl, handleImageChange,setImageUrl };
   };
   

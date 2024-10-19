@@ -11,7 +11,7 @@ const useSignUpWithEmailAndPassword = () => {
         error,
       ] = useCreateUserWithEmailAndPassword(auth);
     const showToast=useShowToast();
-    const loginUser= useAuthStore(state => state.login)
+    const loginUser= useAuthStore((state) => state.login)
 
     const signup= async(inputs)=>{
         if(!inputs.email||!inputs.password ||!inputs.username||!inputs.fullName){
