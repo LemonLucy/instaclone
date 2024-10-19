@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate} from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
 import AuthPage from './pages/AuthPage/AuthPage';
-import PageLayout from './Layouts/PageLayout/PageLayout';
+import PageLayout from './PageLayout/PageLayout';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import useAuthStore from './store/authStore';
 
