@@ -3,19 +3,19 @@ import { useState } from "react";
 import useAuthStore from "../store/authStore";
 import useShowToast from "./useShowToast";
 import { firestore } from "../firebase/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useUserProfileStore from "../store/userProfileStore";
 import useUploadImage from "./useUploadImg";
 
-const useEditProfile = () => {
+const useEditProfile = ({path}) => {
 	const [isUpdating, setIsUpdating] = useState(false);
 	const authUser = useAuthStore((state) => state.user);
 	const setAuthUser = useAuthStore((state) => state.setUser);
 	const setUserProfile = useUserProfileStore((state) => state.setUserProfile);
 	const showToast = useShowToast();
-	const uploadImage=useUploadImage();
+	const uploadImage=useUploadImage(path);
 
-	const editProfile = async (inputs, selectedFile) => {
+	const editProfile = async (inputs={}, selectedFile=null, newPost=null) => {
 		if (isUpdating || !authUser) return;
 		setIsUpdating(true);
 
@@ -35,7 +35,23 @@ const useEditProfile = () => {
 				profilePicURL: URL || authUser.profilePicURL,
 			};
 
-			await updateDoc(userDocRef, updatedUser);
+			// Firestore 업데이트 객체 생성
+			const updates = { ...updatedUser };
+
+			// posts 배열에 새 게시물 추가가 필요한 경우
+			if (newPost) {
+				const postData = {
+				  postId: newPost.postId || Date.now().toString(),
+				  caption: newPost.caption || "",
+				  imageURL: newPost.imageURL || URL,
+				  createdAt: new Date().toISOString(),
+				};
+				updates.posts = arrayUnion(postData); // posts 배열에 추가
+			}
+
+			// Firestore에 업데이트 수행
+			await updateDoc(userDocRef, updates);
+
 			localStorage.setItem("user-info", JSON.stringify(updatedUser));
 			setAuthUser(updatedUser);
 			setUserProfile(updatedUser);

@@ -29,19 +29,22 @@ import {
     const authUser=useAuthStore((state)=>state.user);
     const fileRef=useRef(null);    
     const { imageUrl, handleImageChange } = usePreviewImg(authUser.imageUrl);
-    const {isUpdating,editProfile}=useEditProfile();
+    const {isUpdating,editProfile}=useEditProfile({ path: "profilePic" });
     const showToast=useShowToast();
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleImageChangeWrapper = (e) => {
       const file = e.target.files[0];
-      handleImageChange(e); // 미리보기 URL 생성
-      setSelectedFile(file); // 선택한 파일 상태 업데이트
+      if (file) {
+        handleImageChange(e);
+        setSelectedFile(file);
+      }    
     };
 
     const handleEditProfile=async() =>{
       try {
         await editProfile(inputs,selectedFile);
+        showToast("Success", "Profile updated successfully", "success");
         onClose();
       }catch(error){
         showToast("Error", error.message, "error");

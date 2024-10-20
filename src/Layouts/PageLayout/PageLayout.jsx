@@ -1,9 +1,9 @@
 import {useLocation} from 'react-router-dom'
 import {Flex,Box, Spinner} from '@chakra-ui/react'
-import Sidebar from '../components/Sidebar/Sidebar'
+import Sidebar from '../../components/Sidebar/Sidebar';
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from '../firebase/firebase';
-import Navbar from '../components/Navbar/Navbar';
+import { auth } from '../../firebase/firebase';
+import Navbar from '../../components/Navbar/Navbar';
 
 const PageLayout = ({children}) => {
     const {pathname}=useLocation();
