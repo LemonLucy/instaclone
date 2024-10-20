@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react'
-import { Grid,VStack,Flex,Skeleton,Box } from '@chakra-ui/react'
+import { Grid,VStack,Skeleton,Box } from '@chakra-ui/react'
 import ProfilePost from './ProfilePost'
 
 const ProfilePosts = () => {

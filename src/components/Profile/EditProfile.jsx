@@ -1,6 +1,6 @@
 import {
     Button,
-    Flex,
+    Box,
     FormControl,
     FormLabel,
     Heading,
@@ -52,25 +52,26 @@ import {
     }
 
     return (
-      <Flex 
-        minH={'100vh'}
-        align={'center'}
-        justify={'center'}
-        bg={useColorModeValue('gray.50', 'gray.800')}>
-        <Stack
-          spacing={4}
-          w={'full'}
-          maxW={'md'}
-          bg={useColorModeValue('white', 'gray.700')}
-          rounded={'xl'}
-          boxShadow={'lg'}
-          p={6}
-          my={12}>
-          <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
-            User Profile Edit
-          </Heading>
+      <Box
+        position="absolute" // 절대 위치로 설정
+        top="50%" // 화면 중앙에 배치
+        left="50%"
+        transform="translate(-50%, -50%)" // 중앙 정렬
+        bg={useColorModeValue("white", "gray.700")}
+        p={6}
+        rounded="xl"
+        boxShadow="lg"
+        zIndex={10} // 상위 레이어에 표시
+        maxW="md"
+        w="full"
+      >
+        <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
+          User Profile Edit
+        </Heading>
+  
+        <Stack spacing={4}>
           <FormControl id="userName">
-            <Stack direction={['column', 'row']} spacing={6}>
+            <Stack direction={["column", "row"]} spacing={6}>
               <Center>
                 <Avatar size="xl" src={imageUrl}>
                   <AvatarBadge
@@ -81,76 +82,69 @@ import {
                     colorScheme="red"
                     aria-label="remove Image"
                     icon={<SmallCloseIcon />}
+                    onClick={() => {
+                      setSelectedFile(null);
+                    }}
                   />
                 </Avatar>
               </Center>
               <Center w="full">
-                <Button w="full" onClick={() => fileRef.current.click()}>Edit Profile</Button>
+                <Button w="full" onClick={() => fileRef.current.click()}>
+                  Edit Profile Image
+                </Button>
               </Center>
-              <Input type='file' hidden ref={fileRef} 
-              onChange={handleImageChangeWrapper}
-              />
+              <Input type="file" hidden ref={fileRef} onChange={handleImageChangeWrapper} />
             </Stack>
           </FormControl>
-
+  
           <FormControl>
-            <FormLabel fontSize={"sm"}>Full Name</FormLabel>
+            <FormLabel>Full Name</FormLabel>
             <Input
-                placeholder={"Full Name"}
-                size={"sm"}
-                type={"text"}
-                value={inputs.fullName || authUser.fullName}
-                onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+              placeholder="Full Name"
+              value={inputs.fullName || authUser.fullName}
+              onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
             />
-        </FormControl>
-
-        <FormControl>
-            <FormLabel fontSize={"sm"}>Username</FormLabel>
+          </FormControl>
+  
+          <FormControl>
+            <FormLabel>Username</FormLabel>
             <Input
-                placeholder={"Username"}
-                size={"sm"}
-                type={"text"}
-                value={inputs.username || authUser.username}
-                onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+              placeholder="Username"
+              value={inputs.username || authUser.username}
+              onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
             />
-        </FormControl>
-
-        <FormControl>
-            <FormLabel fontSize={"sm"}>Bio</FormLabel>
+          </FormControl>
+  
+          <FormControl>
+            <FormLabel>Bio</FormLabel>
             <Input
-                placeholder={"Bio"}
-                size={"sm"}
-                type={"text"}
-                value={inputs.bio || authUser.bio}
-                onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
+              placeholder="Bio"
+              value={inputs.bio || authUser.bio}
+              onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
             />
-        </FormControl>
-          <Stack spacing={6} direction={['column', 'row']}>
+          </FormControl>
+  
+          <Stack spacing={6} direction={["column", "row"]}>
             <Button
-              bg={'red.400'}
-              color={'white'}
+              bg="red.400"
+              color="white"
               w="full"
-              _hover={{
-                bg: 'red.500',
-              }}
+              _hover={{ bg: "red.500" }}
               onClick={onClose}
-              >
+            >
               Cancel
             </Button>
             <Button
-              bg={'blue.400'}
-              color={'white'}
+              bg="blue.400"
+              color="white"
               w="full"
-              _hover={{
-                bg: 'blue.500',
-              }}
+              _hover={{ bg: "blue.500" }}
               onClick={handleEditProfile}
               isLoading={isUpdating}
-              >
-              Submit
+            >
+              Save
             </Button>
           </Stack>
         </Stack>
-      </Flex>
-    )
-  }
+      </Box>
+    );  }
