@@ -1,37 +1,44 @@
-import {useState,useEffect} from 'react'
-import { Grid,VStack,Skeleton,Box } from '@chakra-ui/react'
+import { Grid,VStack,Skeleton,Box,Flex,Text } from '@chakra-ui/react'
 import ProfilePost from './ProfilePost'
+import useGetUserPosts from '../../hooks/useGetUserPosts'
 
 const ProfilePosts = () => {
-    const [isLoading,setIsLoading]=useState(true)
+    
+  const {isLoading,posts}=useGetUserPosts()
+  console.log(isLoading);
 
-    useEffect(() =>{
-        setTimeout(() =>{
-            setIsLoading(false)
-        },2000)
-    },[])
+  const noPostsFound=!isLoading &&posts.length==0;
+  if(noPostsFound) return <NoPostsFound />
+  console.log(isLoading);
+
   return (
-<Grid templateColumns={{ base: "1fr", sm: "repeat(3, 1fr)" }} gap={6}>
-  {isLoading &&
-    [0, 1, 2, 3, 4, 5].map((_, idx) => (
-      <VStack key={idx} gap={4} alignItems={"flex-start"}>
-        <Skeleton w="full" h="300px">
-          <Box h="300px" />
-        </Skeleton>
-      </VStack>
-    ))}
+    <Grid templateColumns={{ base: "1fr", sm: "repeat(3, 1fr)" }} gap={6}>
+        {isLoading &&
+          [0, 1, 2,].map((_, idx) => (
+            <VStack key={idx} gap={4} alignItems={"flex-start"}>
+              <Skeleton w="full" h="300px">
+                <Box h="300px" />
+              </Skeleton>
+            </VStack>
+          ))}
 
-    {!isLoading && (
-        <>
-        <ProfilePost img="/img1.png" />
-        <ProfilePost img="/img2.png" />
-        <ProfilePost img="/img3.png" />
-        <ProfilePost img="/img4.png" />
-
-        </>
-    )}
-</Grid>
+        {!isLoading && (
+            <>
+            {posts.map((post) => (
+              <ProfilePost post={post} key={post.id} />
+            ))}
+            </>
+        )}
+    </Grid>
   )
 }
 
 export default ProfilePosts
+
+const NoPostsFound = () => {
+	return (
+		<Flex flexDir='column' textAlign={"center"} mx={"auto"} mt={10}>
+			<Text fontSize={"2xl"}>No Posts Found🤔</Text>
+		</Flex>
+	);
+};
