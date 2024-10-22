@@ -25,9 +25,10 @@ import usePreviewImg from "../../hooks/usePreviewImg";
 
 const CreatePost = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
 	const [selectedFile, setSelectedFile] = useState(null);
 	const imageRef = useRef(null);
-	const { fuckPost, isUpdating }=useCreatePost();
+	const { createNewPost, isUpdating }=useCreatePost();
 	const showToast=useShowToast();
 	const { imageUrl, handleImageChange } = usePreviewImg(null);
 	const [caption,setCaption]=useState("")
@@ -42,11 +43,11 @@ const CreatePost = () => {
 
 	const handleCreatePost=async() =>{
 		try {
-			await fuckPost(caption, selectedFile);
+			await createNewPost(caption, selectedFile);
 			onClose();
 			setSelectedFile(null);
 			setCaption("");
-    if (imageRef.current) imageRef.current.value = "";
+			if (imageRef.current) imageRef.current.value = "";
 		}catch(error){
 			showToast("Error", error.message, "error");
 		}

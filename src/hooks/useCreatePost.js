@@ -34,7 +34,7 @@ const useCreatePost = () => {
                 caption: caption,
                 likes:[],
                 comments: [],
-                createdAt: new Date().now(),
+                // createdAt: new Date().now(),
                 createdBy: authUser.uid,
                 imageUrl: URL,
             };
