@@ -19,58 +19,38 @@ import {
 import { CreatePostLogo } from "../../assets/constants";
 import { BsFillImageFill } from "react-icons/bs";
 import { useRef, useState } from "react";
+import useCreatePost from "../../hooks/useCreatePost";
+import useShowToast from "../../hooks/useShowToast";
 import usePreviewImg from "../../hooks/usePreviewImg";
-import useAuthStore from "../../store/authStore";
-import useUploadImage from "../../hooks/useUploadImg";
-import useEditProfile from "../../hooks/useEditProfile";
 
 const CreatePost = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [caption, setCaption] = useState("");
-	const authUser=useAuthStore((state)=>state.user);
-	const imageRef = useRef(null);
-    const { imageUrl, handleImageChange, setImageUrl } = usePreviewImg(authUser?.imageURL || null);
-    const uploadImage = useUploadImage("postPic");
 	const [selectedFile, setSelectedFile] = useState(null);
-	const {isUpdating,editProfile}=useEditProfile({ path: "postPic" });
+	const imageRef = useRef(null);
+	const { fuckPost, isUpdating }=useCreatePost();
+	const showToast=useShowToast();
+	const { imageUrl, handleImageChange } = usePreviewImg(null);
+	const [caption,setCaption]=useState("")
 
 	const handleImageChangeWrapper = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			handleImageChange(e); 
-			setSelectedFile(file); 
-		}
-	};
-
-	const handlePostCreation = async () => {
-		try {
-		  let uploadedImageUrl = "";
-	
-		  // 이미지 업로드 처리
-		  if (selectedFile) {
-			uploadedImageUrl = await uploadImage(selectedFile);
-		  }
-	
-		  // 새 게시물 데이터 생성
-		  const newPost = {
-			postId: Date.now().toString(), // 고유 ID 생성
-			caption: caption || "",
-			imageURL: uploadedImageUrl,
-			createdAt: new Date().toISOString(),
-		  };
-	
-		  // editProfile 호출로 posts 배열 업데이트
-		  await editProfile({}, selectedFile, newPost);
-	
-		  // 초기화 및 모달 닫기
-		  setCaption("");
-		  setSelectedFile(null);
-		  setImageUrl(null);
-		  onClose();
-		} catch (error) {
-		  console.error("Image upload failed:", error);
-		}
+			handleImageChange(e);
+		  	setSelectedFile(file);
+		}    
 	  };
+
+	const handleCreatePost=async() =>{
+		try {
+			await fuckPost(caption, selectedFile);
+			onClose();
+			setSelectedFile(null);
+			setCaption("");
+    if (imageRef.current) imageRef.current.value = "";
+		}catch(error){
+			showToast("Error", error.message, "error");
+		}
+	}
 
 	return (
 		<>
@@ -126,7 +106,7 @@ const CreatePost = () => {
 									top={2}
 									right={2}
 									onClick={() => {
-										setImageUrl(null);
+										setSelectedFile(null);
 										imageRef.current.value = "";
 									}}
 								/>
@@ -135,7 +115,7 @@ const CreatePost = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button mr={3} onClick={handlePostCreation} isLoading={isUpdating}>
+						<Button mr={3} onClick={handleCreatePost} isLoading={isUpdating}>
 							Post
 						</Button>
 					</ModalFooter>
