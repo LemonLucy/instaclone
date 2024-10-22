@@ -20,10 +20,13 @@ import { FaComment } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Comment from '../Comment/Comment';
 import PostFooter from '../FeedPosts/PostFooter';
+import useUserProfileStore from '../../store/userProfileStore';
 
 const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const userProfile=useUserProfileStore((state)=>state.userProfile);
+
   return (
     <>
       <GridItem position="relative" cursor="pointer" onClick={onOpen}>
@@ -85,8 +88,11 @@ const ProfilePost = ({ post }) => {
               <Flex flex="1" direction="column" p={4} bg="gray.900" color="white" maxW="60%">
                 <Flex align="center" justify="space-between" mb={2}>
                   <Flex align="center" gap={2}>
-                    <Avatar src="/profilepic.png" size="sm" name="As a Programmer" />
-                    <Text fontSize="sm" fontWeight="bold">asaprogrammer</Text>
+                    <Avatar 
+                    src={userProfile.profilePicURL} size="sm" name="As a Programmer" />
+                    <Text fontSize="sm" fontWeight="bold">
+                      {userProfile.username}
+                    </Text>
                   </Flex>
                   <Flex align="center" gap={4}>
                     <Box as={MdDelete} color="gray.500" boxSize={4} cursor="pointer" mt="2px" />
