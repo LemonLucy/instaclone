@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {Box,Flex,Text,Button,InputGroup, Input, InputRightElement} from '@chakra-ui/react'
 import {NotificationsLogo, UnlikeLogo,CommentLogo} from '../../assets/constants';
 
-const PostFooter = ({username,isProfilePage}) => {
+const PostFooter = ({username,isProfilePage,post}) => {
     const [liked,setLiked]=useState(false)
     const [likes,setLikes]=useState(1000);
 
@@ -29,7 +29,7 @@ const PostFooter = ({username,isProfilePage}) => {
         </Box>
     </Flex>
     <Text fontWeight={600} fontSize={"sm"}>
-        {likes} likes
+        {post.likes.length} likes
     </Text>
       {/* isProfilePage가 false일 때만 아래 부분을 렌더링 */}
       {!isProfilePage && (
@@ -41,7 +41,7 @@ const PostFooter = ({username,isProfilePage}) => {
             </Text>
           </Text>
           <Text fontSize='sm' color={"gray"}>
-            View all 1,000 comments
+            View all {post.comments.length} comments
           </Text>
         </>
       )}

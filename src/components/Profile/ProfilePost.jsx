@@ -7,7 +7,6 @@ import {
   Image,
   Box,
   Flex,
-  Icon,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -50,9 +49,20 @@ const ProfilePost = ({ post }) => {
           _hover={{ opacity: 1 }} // 호버 시 보이도록 설정
           transition="opacity 0.2s ease-in-out"
         >
-          <Icon as={AiFillHeart} color="white" boxSize={6} />
-          <Icon as={FaComment} color="white" boxSize={6} />
-        </Flex>
+            <Flex>
+							<AiFillHeart size={20} />
+							<Text fontWeight={"bold"} ml={2}>
+								{post.likes.length}
+							</Text>
+						</Flex>
+
+						<Flex>
+							<FaComment size={20} />
+							<Text fontWeight={"bold"} ml={2}>
+								{post.comments.length}
+							</Text>
+						</Flex>        
+          </Flex>
       </GridItem>
 
       <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -94,7 +104,7 @@ const ProfilePost = ({ post }) => {
 
                 <Divider borderColor="gray.700" />
 
-                <PostFooter isProfilePage={true} />
+                <PostFooter isProfilePage={true} post={post} />
               </Flex>
             )}
           </ModalBody>
