@@ -25,7 +25,6 @@ import PostFooter from '../FeedPosts/PostFooter';
 const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
-console.log(post)
   return (
     <>
       <GridItem position="relative" cursor="pointer" onClick={onOpen}>
@@ -34,7 +33,7 @@ console.log(post)
           _hover={{ opacity: 0.8 }}
           transition="opacity 0.2s ease-in-out"
         >
-          <Image src={post.imageURL} alt="Profile post" w="full" h="300px" objectFit="cover" borderRadius="md" />
+          <Image src={post.imageUrl} alt="Profile post" w="full" h="300px" objectFit="cover" borderRadius="md" />
         </Box>
 
         {/* 호버 시 표시되는 아이콘 */}
@@ -68,7 +67,7 @@ console.log(post)
           <ModalBody p={0} display="flex" flexDirection={isSmallScreen ? 'column' : 'row'}>
             {/* 이미지 섹션 */}
             <Box flex="1" maxW={isSmallScreen ? '100%' : '60%'} bg="black">
-              <Image src={post.imageURL} alt="Profile post enlarged" w="full" h="full" objectFit="cover" />
+              <Image src={post.imageUrl} alt="Profile post enlarged" w="full" h="full" objectFit="cover" />
             </Box>
 
             {/* 텍스트 및 댓글 섹션 */}
